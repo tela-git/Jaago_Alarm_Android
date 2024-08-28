@@ -17,14 +17,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             JaagoTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     val navController = rememberNavController()
                     JaagoApp(
-                        modifier = Modifier
-                            .padding(innerPadding),
+                        modifier = Modifier,
                         navController = navController
                     )
-                }
             }
         }
     }

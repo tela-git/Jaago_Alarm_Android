@@ -12,10 +12,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.jaago.ui.components.JaagoBottomAppBar
 import com.example.jaago.ui.components.JaagoTopAppBar
 import com.example.jaago.ui.screens.AlarmScreen
+import com.example.jaago.ui.screens.ClockScreen
+import com.example.jaago.ui.screens.StopWatchScreen
+import com.example.jaago.ui.screens.TimerScreen
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+
 @Composable
 fun JaagoApp(
     navController: NavHostController,
@@ -28,9 +32,15 @@ fun JaagoApp(
                 modifier = modifier,
                 navController = navController
             )
+        },
+        bottomBar = {
+            JaagoBottomAppBar(
+                modifier = modifier,
+                navController = navController,
+            )
         }
 
-    ) {
+    ) {innerPadding->
         NavHost(
             navController = navController,
             startDestination = Screens.AlarmScreen.route
@@ -39,16 +49,40 @@ fun JaagoApp(
                 route = Screens.AlarmScreen.route
             ) {
                 AlarmScreen(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                )
+            }
+            composable(
+                route = Screens.ClockScreen.route
+            ) {
+                ClockScreen(
+                    modifier = Modifier
+                )
+            }
+            composable(
+                route = Screens.StopWatchScreen.route
+            ) {
+                StopWatchScreen(
+                    modifier = Modifier
+                )
+            }
+            composable(
+                route = Screens.TimerScreen.route
+            ) {
+                TimerScreen(
+                    modifier = Modifier
                 )
             }
         }
+
     }
 }
 
 sealed class Screens(val route: String) {
-        object AlarmScreen : Screens("AlarmScreen")
-        object ClockScreen : Screens("ClockScreen")
-        object StopWatchScreen : Screens("StopWatchScreen")
-        object TimerScreen : Screens("TimerScreen")
+        object AlarmScreen : Screens("Alarm")
+        object ClockScreen : Screens("Clock")
+        object StopWatchScreen : Screens("Stopwatch")
+        object TimerScreen : Screens("Timer")
 }
