@@ -1,20 +1,16 @@
 package com.example.jaago
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.example.jaago.ui.components.JaagoBottomAppBar
 import com.example.jaago.ui.components.JaagoTopAppBar
-import com.example.jaago.ui.screens.AlarmScreen
+import com.example.jaago.ui.screens.alarm.AlarmsViewScreen
 import com.example.jaago.ui.screens.ClockScreen
 import com.example.jaago.ui.screens.StopWatchScreen
 import com.example.jaago.ui.screens.TimerScreen
@@ -48,10 +44,10 @@ fun JaagoApp(
             composable(
                 route = Screens.AlarmScreen.route
             ) {
-                AlarmScreen(
+                AlarmsViewScreen(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(innerPadding)
+                        .padding(innerPadding),
                 )
             }
             composable(
@@ -81,8 +77,8 @@ fun JaagoApp(
 }
 
 sealed class Screens(val route: String) {
-        object AlarmScreen : Screens("Alarm")
-        object ClockScreen : Screens("Clock")
-        object StopWatchScreen : Screens("Stopwatch")
-        object TimerScreen : Screens("Timer")
+    object AlarmScreen : Screens("Alarm")
+    object ClockScreen : Screens("Clock")
+    object StopWatchScreen : Screens("Stopwatch")
+    object TimerScreen : Screens("Timer")
 }

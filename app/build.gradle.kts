@@ -32,11 +32,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_19
-        targetCompatibility = JavaVersion.VERSION_19
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     kotlinOptions {
-        jvmTarget = "19"
+        jvmTarget = "21"
     }
     buildFeatures {
         compose = true
@@ -70,8 +70,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     //Room
-    val room_version = "2.6.1"
-
     implementation(libs.androidx.room.runtime)
     annotationProcessor(libs.room.compiler)
     ksp(libs.room.compiler)

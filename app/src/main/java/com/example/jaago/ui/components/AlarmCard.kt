@@ -1,15 +1,12 @@
 package com.example.jaago.ui.components
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -18,7 +15,6 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
@@ -32,29 +28,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.jaago.R
-import com.example.jaago.domain.model.Alarm
-import com.example.jaago.domain.model.Days
+import com.example.jaago.data.Alarm
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlarmCard(
     modifier: Modifier = Modifier,
+    alarm: Alarm,
 ) {
-   val alarm = Alarm(
-       time = "12:00",
-       label = remember { mutableStateOf("") },
-       Song = "Bhaja Govindam by M.S Subbalakshmi",
-       doVibrate = true,
-       repetition = Days()
-   )
 
     var isExpanded by remember { mutableStateOf(false) }
-    val timePickerState = rememberTimePickerState(
-
-    )
-    var showTimePicker by remember{ mutableStateOf(false)}
+    val timePickerState = rememberTimePickerState()
     var isScheduled by remember { mutableStateOf(false) }
 
     Card(
@@ -77,15 +62,15 @@ fun AlarmCard(
             ){
                 if(isExpanded){
                     OutlinedTextField(
-                        value = alarm.label.value,
-                        onValueChange = { alarm.label.value = it },
+                        value = alarm.label,
+                        onValueChange = {  },
                         singleLine = true,
                         keyboardActions = KeyboardActions(onDone =  { isExpanded  = false}),
                     )
                 }
                 if(!isExpanded) {
                     Text(
-                        text = alarm.label.value,
+                        text = alarm.label,
                         style = MaterialTheme.typography.labelLarge
                     )
                 }
@@ -107,7 +92,6 @@ fun AlarmCard(
                         ),
                         style = MaterialTheme.typography.displayLarge,
                     )
-
                     Switch(
                         checked = isScheduled,
                         onCheckedChange = { isScheduled = it }
@@ -151,13 +135,4 @@ fun AlarmCard(
 
         }
     }
-}
-
-
-@Preview
-@Composable
-fun AlarmCardPreview() {
-    AlarmCard(
-
-    )
 }
