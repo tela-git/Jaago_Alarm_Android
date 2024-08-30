@@ -5,6 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.jaago.data.AlarmRepository
 import com.example.jaago.data.Alarm
 import com.example.jaago.data.AlarmEntity
@@ -29,6 +30,50 @@ class AlarmViewModel @Inject constructor(
     val alarmsListUiState = _alarmsListUiState.asStateFlow()
 
 
+    fun updateAlarmLabel(newLabel: String, alarm: Alarm) {
+        viewModelScope.launch {
+            alarmRepository.updateAlarm(
+                alarm = AlarmEntity(
+                    id = alarm.id,
+                    isScheduled = alarm.isScheduled,
+                    label = newLabel,
+                    doVibrate = alarm.doVibrate,
+                    song = alarm.song,
+                    timeInMillis = alarm.timeInMillis
+                )
+            )
+        }
+    }
+    fun updateAlarmScheduleState(newState: Boolean, alarm: Alarm) {
+        viewModelScope.launch {
+            alarmRepository.updateAlarm(
+                alarm = AlarmEntity(
+                    id = alarm.id,
+                    isScheduled = newState,
+                    label = alarm.label,
+                    doVibrate = alarm.doVibrate,
+                    song = alarm.song,
+                    timeInMillis = alarm.timeInMillis
+                )
+            )
+        }
+    }
+
+    fun deleteAlarm(alarm: Alarm) {
+        viewModelScope.launch {
+            alarmRepository.deleteAlarm(
+                alarm = AlarmEntity(
+                    id = alarm.id,
+                    isScheduled = alarm.isScheduled,
+                    label = alarm.label,
+                    doVibrate = alarm.doVibrate,
+                    song = alarm.song,
+                    timeInMillis = alarm.timeInMillis
+                )
+            )
+        }
+    }
+
     fun setNewAlarm(alarm: Alarm) {
         viewModelScope.launch {
             alarmRepository.setNewAlarm(
@@ -52,6 +97,7 @@ class AlarmViewModel @Inject constructor(
                             state.copy(
                                 alarms = listOfAlarmEntities.map { alarmEntity ->
                                     Alarm(
+                                        id = alarmEntity.id,
                                         doVibrate = alarmEntity.doVibrate,
                                         song = alarmEntity.song,
                                         isScheduled = alarmEntity.isScheduled,
