@@ -1,15 +1,19 @@
 package com.example.jaago.ui.screens.alarm
 
+import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.jaago.AlarmHelper
 import com.example.jaago.data.AlarmRepository
 import com.example.jaago.data.Alarm
 import com.example.jaago.data.AlarmEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,14 +25,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AlarmViewModel @Inject constructor(
-    private val alarmRepository: AlarmRepository
+    private val alarmRepository: AlarmRepository,
+    @ApplicationContext val context: Context
 ): ViewModel() {
 
-    private val _alarmsListUiState: MutableStateFlow<AlarmsListUiState> = MutableStateFlow(
-        AlarmsListUiState()
-    )
+    val alarmHelper by lazy {
+        AlarmHelper(context)
+    }
+    private val _alarmsListUiState: MutableStateFlow<AlarmsListUiState> = MutableStateFlow(AlarmsListUiState())
     val alarmsListUiState = _alarmsListUiState.asStateFlow()
-
 
     fun updateAlarmLabel(newLabel: String, alarm: Alarm) {
         viewModelScope.launch {
@@ -44,6 +49,7 @@ class AlarmViewModel @Inject constructor(
             )
         }
     }
+
     fun updateAlarmScheduleState(newState: Boolean, alarm: Alarm) {
         viewModelScope.launch {
             alarmRepository.updateAlarm(
@@ -56,6 +62,9 @@ class AlarmViewModel @Inject constructor(
                     timeInMillis = alarm.timeInMillis
                 )
             )
+            if(newState) {
+                alarmHelper.setAlarm(triggerTime = alarm.timeInMillis)
+            }
         }
     }
 
@@ -74,15 +83,29 @@ class AlarmViewModel @Inject constructor(
         }
     }
 
-    fun setNewAlarm(alarm: Alarm) {
+    fun addNewAlarm(alarm: Alarm) {
         viewModelScope.launch {
-            alarmRepository.setNewAlarm(
+            alarmRepository.addNewAlarm(
                 AlarmEntity(
                     doVibrate = alarm.doVibrate,
                     isScheduled = alarm.isScheduled,
                     label = alarm.label,
                     song = alarm.song,
                     timeInMillis = alarm.timeInMillis
+                )
+            )
+        }
+    }
+
+    fun updateAlarmTime(newTime: Long, alarm: Alarm) {
+        viewModelScope.launch {
+            alarmRepository.updateAlarm(
+                AlarmEntity(
+                    doVibrate = alarm.doVibrate,
+                    isScheduled = alarm.isScheduled,
+                    label = alarm.label,
+                    song = alarm.song,
+                    timeInMillis = newTime
                 )
             )
         }

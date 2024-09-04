@@ -3,4 +3,7 @@
     <string name="add_alarm">Add a new alarm</string>
     <string name="expand">Exapand</string>
     <string name="collapse">Collapse</string>
+    <string name="enter_any_message">Enter any message.</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="confirm">Confirm</string>
 </resources>

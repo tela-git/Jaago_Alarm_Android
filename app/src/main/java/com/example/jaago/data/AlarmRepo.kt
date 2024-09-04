@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 interface AlarmRepository {
-    suspend fun setNewAlarm(alarm: AlarmEntity)
+    suspend fun addNewAlarm(alarm: AlarmEntity)
 
     fun getAllAlarms(): Flow<List<AlarmEntity>>
 
@@ -17,7 +17,7 @@ class AlarmRepositoryImpl @Inject constructor(
     private val alarmDao: AlarmDao
 ): AlarmRepository {
 
-    override suspend fun setNewAlarm(alarm: AlarmEntity) {
+    override suspend fun addNewAlarm(alarm: AlarmEntity) {
         alarmDao.addNewAlarm(alarm)
     }
 

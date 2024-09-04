@@ -14,16 +14,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.jaago.AlarmHelper
 import com.example.jaago.R
 import com.example.jaago.data.Alarm
 import com.example.jaago.ui.components.AlarmCard
+import java.util.Calendar
 
 @Composable
 fun AlarmsViewScreen(
@@ -36,7 +40,7 @@ fun AlarmsViewScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    alarmViewModel.setNewAlarm(
+                    alarmViewModel.addNewAlarm(
                         Alarm(
                             isScheduled = false,
                             doVibrate = true,
@@ -83,7 +87,10 @@ fun AlarmsViewScreen(
                                     alarm = alarm
                                 )
                             },
-                            onDeleteAlarmClicked = { alarm -> alarmViewModel.deleteAlarm(alarm) }
+                            onDeleteAlarmClicked = { alarm -> alarmViewModel.deleteAlarm(alarm) },
+                            updateAlarmTime = { newTime: Long->
+                                alarmViewModel.updateAlarmTime(newTime, alarm)
+                            }
                         )
                     }
                 }
